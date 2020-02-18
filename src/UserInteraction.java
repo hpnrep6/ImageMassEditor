@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class UserInteraction {
-    private JButton crop, flipV, flipH, overlap, stitch;
+    private JButton crop, flipV, flipH, overlap, stitch, split;
 
     public UserInteraction() throws IOException {
         JFrame a = new JFrame();
@@ -22,14 +22,18 @@ public class UserInteraction {
         a.getContentPane().setSize(700,500);
         this.crop = new JButton("Crop");
         this.stitch = new JButton("Stitch");
+        this.split = new JButton("Split");
         a.add(crop);
         a.add(stitch);
+        a.add(split);
         crop.setLocation(10,10);
         stitch.setLocation(20,20);
-        a.setLayout(new GridLayout(1,2));
+        split.setLocation(30,20);
+        a.setLayout(new GridLayout(1,3));
         a.setSize(1000,500);
         crop.addActionListener(this::actionPerformed);
         stitch.addActionListener(this::actionPerformed);
+        split.addActionListener(this::actionPerformed);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -55,6 +59,15 @@ public class UserInteraction {
                 Main.stitchFolder();
             } catch (Exception error) {
                 //JOptionPane.showMessageDialog(null,"An error occurred, please make sure that all the files in the folder selected are image files of the same width");
+                System.out.println(error);
+            }
+        }
+        if(e.getSource() == split) {
+            try {
+                String numSplit = JOptionPane.showInputDialog("Enter number of images to split into");
+                int splitNum = Integer.parseInt(numSplit);
+                Main.split(ImageIO.read(Main.chooseFile()),splitNum);
+            } catch (Exception error) {
                 System.out.println(error);
             }
         }
