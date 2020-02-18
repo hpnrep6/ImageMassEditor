@@ -13,8 +13,8 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String args[]) throws IOException {
-        //new UserInteraction();
-        split(ImageIO.read(chooseFile()),3);
+        new UserInteraction();
+        //split(ImageIO.read(chooseFile()),3);
     }
 
     // combines chooseDirectory() and fileArray()
