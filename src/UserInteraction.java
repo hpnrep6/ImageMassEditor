@@ -13,27 +13,31 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class UserInteraction {
-    private JButton crop, flipV, flipH, overlap, stitch, split;
+    private JButton crop, cropFile, flipV, flipH, overlap, stitch, split;
 
     public UserInteraction() throws IOException {
         JFrame a = new JFrame();
         a.setVisible(true);
         a.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         a.getContentPane().setSize(700,500);
-        this.crop = new JButton("Crop");
+        this.crop = new JButton("Crop (Folder)");
         this.stitch = new JButton("Stitch");
         this.split = new JButton("Split");
+        this.cropFile = new JButton("Crop (File)");
         a.add(crop);
         a.add(stitch);
         a.add(split);
+        a.add(cropFile);
         crop.setLocation(10,10);
         stitch.setLocation(20,20);
         split.setLocation(30,20);
-        a.setLayout(new GridLayout(1,3));
+        cropFile.setLocation(40,20);
+        a.setLayout(new GridLayout(2,3));
         a.setSize(1000,500);
         crop.addActionListener(this::actionPerformed);
         stitch.addActionListener(this::actionPerformed);
         split.addActionListener(this::actionPerformed);
+        cropFile.addActionListener(this::actionPerformed);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -69,9 +73,23 @@ public class UserInteraction {
                 Main.split(ImageIO.read(Main.chooseFile()),splitNum);
             } catch (Exception error) {
                 System.out.println(error);
+
             }
         }
+        if(e.getSource() == cropFile) {
+            try{
+            BufferedImage buff = ImageIO.read(Main.chooseFile());
+            String coords = JOptionPane.showInputDialog("Enter the first X coordinate, then the first Y coordinate, and then the second X coordinate, followed by the second Y coordinate, all separated by a comma (3,5,543,958 etc.)");
+            String[] splitCoords = coords.split(",");
 
+            DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+            LocalDateTime currentDate = LocalDateTime.now();
+            String curDate = currentDate.format(date) + "-";
+            Main.imgCrop(Integer.parseInt(splitCoords[0]), Integer.parseInt(splitCoords[1]), Integer.parseInt(splitCoords[2]), Integer.parseInt(splitCoords[3]), buff, curDate + "crop");
+
+            } catch (Exception error) {
+                JOptionPane.showMessageDialog(null, "An error occurred, please try again.");
+            }
+        }
     }
-
 }
