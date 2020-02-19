@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String args[]) throws IOException {
         new UserInteraction();
-        //split(ImageIO.read(chooseFile()),3);
+        //split(ImageIO.read(chooseFile()),9);
     }
 
     // combines chooseDirectory() and fileArray()
@@ -76,7 +76,7 @@ public class Main {
             }
         }
         // saves image in folder created
-        String savePath = System.getProperty("user.home") +  File.separator + "StitchedImages";
+        String savePath = System.getProperty("user.home") +  File.separator + "JavaEditedImage";
         File saveDirectory = new File(savePath);
 
         DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
@@ -123,7 +123,7 @@ public class Main {
                 cropImage.setRGB(xt, yt, curColour);
             }
         }
-        String savePath = System.getProperty("user.home") +  File.separator + "CroppedImages";
+        String savePath = System.getProperty("user.home") +  File.separator + "JavaEditedImages";
         File saveDirectory = new File(savePath);
 
         if(!saveDirectory.exists()){
@@ -169,7 +169,7 @@ public class Main {
         }
         splitList[splitNum - 1] = buffCrop(0,curIndex,width,curIndex += splitHeight,buffImage);
         // saving image
-        String savePath = System.getProperty("user.home") +  File.separator + "CroppedImages";
+        String savePath = System.getProperty("user.home") +  File.separator + "JavaEditedImages";
         File saveDirectory = new File(savePath);
 
         if(!saveDirectory.exists()){
@@ -188,6 +188,32 @@ public class Main {
             }
         }
     }
+
+    public static void crop(imageFile imgF) {
+        String coords;
+        ArrayList<Integer> coordInt = new ArrayList<Integer>();
+        coords = JOptionPane.showInputDialog("Enter the first X coordinate, then the first Y coordinate, and then the second X coordinate, followed by the second Y coordinate, all separated by a comma (3,5,543,958 etc.)");
+        String[] splitCoords = coords.split(",");
+        while(splitCoords.length > 4) {
+            coords = JOptionPane.showInputDialog("Only four integers allowed. Enter the first X coordinate, then the first Y coordinate, and then the second X coordinate, followed by the second Y coordinate, all separated by a comma (3,5,543,958 etc.)");
+            Arrays.fill(splitCoords, null);
+            splitCoords = coords.split(",");
+        }
+        for(int i = 0; i < 4; i++) {
+            coordInt.add(i,Integer.parseInt(splitCoords[i]));
+        }
+        System.out.println(coordInt);
+        while(coordInt.get(0) < 0 || coordInt.get(0) > imgF.imgWidth() || coordInt.get(1) < 0 || coordInt.get(1) > imgF.imgHeight() || coordInt.get(2) > imgF.imgWidth() || coordInt.get(3) > imgF.imgHeight()){
+            coords = JOptionPane.showInputDialog("Coordinates out of bounds. Enter the first X coordinate, then the first Y coordinate, and then the second X coordinate, followed by the second Y coordinate, all separated by a comma (3,5,543,958 etc.)");
+            splitCoords = coords.split(",");
+            coordInt.clear();
+            for(int i = 0; i < 4; i++) {
+                coordInt.add(i,Integer.parseInt(splitCoords[i]));
+            }
+        }
+        imgF.imgCrop(coordInt.get(0),coordInt.get(1),coordInt.get(2),coordInt.get(3));
+    }
+
     // creates a random string
     public static String randString(int length) {
         String randChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_";
