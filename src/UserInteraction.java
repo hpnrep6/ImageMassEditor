@@ -14,7 +14,6 @@ import java.util.*;
 
 public class UserInteraction {
     private JButton crop, cropFile, flipV, flipH, overlap, stitch, split;
-
     public UserInteraction() throws IOException {
         JFrame a = new JFrame();
         a.setVisible(true);
@@ -24,20 +23,28 @@ public class UserInteraction {
         this.stitch = new JButton("Stitch");
         this.split = new JButton("Split");
         this.cropFile = new JButton("Crop (File)");
+        this.flipH = new JButton("Reflect Horizontally");
+        this.flipV = new JButton("Reflect Vertically");
         a.add(crop);
         a.add(stitch);
         a.add(split);
         a.add(cropFile);
+        a.add(flipH);
+        a.add(flipV);
         crop.setLocation(10,10);
         stitch.setLocation(20,20);
         split.setLocation(30,20);
         cropFile.setLocation(40,20);
+        flipH.setLocation(50,20);
+        flipV.setLocation(60,20);
         a.setLayout(new GridLayout(2,3));
         a.setSize(1000,500);
         crop.addActionListener(this::actionPerformed);
         stitch.addActionListener(this::actionPerformed);
         split.addActionListener(this::actionPerformed);
         cropFile.addActionListener(this::actionPerformed);
+        flipH.addActionListener(this::actionPerformed);
+        flipV.addActionListener(this::actionPerformed);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -89,6 +96,21 @@ public class UserInteraction {
 
             } catch (Exception error) {
                 JOptionPane.showMessageDialog(null, "An error occurred, please try again.");
+            }
+        }
+
+        if(e.getSource() == flipH) {
+            try {
+                Main.imgMirrorH(ImageIO.read(Main.chooseFile()));
+            } catch (Exception error) {
+                System.out.println(error);
+            }
+        }
+        if(e.getSource() == flipV) {
+            try {
+                Main.imgMirrorV(ImageIO.read(Main.chooseFile()));
+            } catch (Exception error) {
+                System.out.println(error);
             }
         }
     }
