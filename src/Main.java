@@ -16,7 +16,6 @@ public class Main {
         new UserInteraction();
         //split(ImageIO.read(chooseFile()),9);
     }
-
     // combines chooseDirectory() and fileArray()
     public static void stitchFolder() throws IOException{
         stitch(fileArray(chooseDirectory()));
@@ -47,7 +46,6 @@ public class Main {
         }
         return listFiles;
     }
-
     // stitches array image files and saves it
     public static void stitch(File[] f) throws IOException {
         // sets height and width of stitched image
@@ -104,7 +102,6 @@ public class Main {
             return null;
         }
     }
-
     public static void imgCrop(int xPosOne, int yPosOne, int xPosTwo, int yPosTwo, BufferedImage buffImage, String saveName){
         if(xPosOne > xPosTwo) {
             int temp = xPosOne;
@@ -159,7 +156,6 @@ public class Main {
         }
         return cropImage;
     }
-
     public static void split(BufferedImage buffImage, int splitNum) {
         int height = buffImage.getHeight(), width = buffImage.getWidth(), splitHeight = height / splitNum, curIndex = 0;
         BufferedImage[] splitList = new BufferedImage[splitNum];
@@ -188,7 +184,6 @@ public class Main {
             }
         }
     }
-
     public static void crop(imageFile imgF) {
         String coords;
         ArrayList<Integer> coordInt = new ArrayList<Integer>();
@@ -214,6 +209,56 @@ public class Main {
         imgF.imgCrop(coordInt.get(0),coordInt.get(1),coordInt.get(2),coordInt.get(3));
     }
 
+    public static void imgMirrorH(BufferedImage buff){
+        File tempDir = new File(System.getProperty("user.home") + File.separator + "JavaEditedImages");
+        String savePath = System.getProperty("user.home") + File.separator + "JavaEditedImages";
+        if(!tempDir.exists()){
+            tempDir.mkdir();
+        }
+        BufferedImage mirrorImage = new BufferedImage(buff.getWidth(),buff.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        for(int y = 0; y < buff.getHeight(); y++) {
+            for(int x = 0, x2 = buff.getWidth() - 1; x < buff.getWidth(); x++, x2--) {
+                int curColour = buff.getRGB(x,y);
+                mirrorImage.setRGB(x2,y,curColour);
+            }
+        }
+        // save image
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String curDate = currentDate.format(date) + "-";
+
+        try{
+            File u = new File(savePath + File.separator + currentDate + "reflectVertically" + ".png");
+            ImageIO.write(mirrorImage,"png",u);
+        }catch(IOException e){
+            System.out.println("Error: " + e);
+        }
+    }
+    public static void imgMirrorV(BufferedImage buff){
+        File tempDir = new File(System.getProperty("user.home") + File.separator + "JavaEditedImages");
+        String savePath = System.getProperty("user.home") + File.separator + "JavaEditedImages";
+        if(!tempDir.exists()){
+            tempDir.mkdir();
+        }
+        BufferedImage mirrorImage = new BufferedImage(buff.getWidth(),buff.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        for(int y = 0, y2 = buff.getHeight() - 1; y < buff.getHeight(); y++, y2--) {
+            for(int x = 0; x < buff.getWidth(); x++) {
+                int curColour = buff.getRGB(x,y);
+                mirrorImage.setRGB(x, y2,curColour);
+            }
+        }
+        // save image
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        LocalDateTime currentDate = LocalDateTime.now();
+        String curDate = currentDate.format(date) + "-";
+
+        try{
+            File u = new File(savePath + File.separator + currentDate + "reflectVertically" + ".png");
+            ImageIO.write(mirrorImage,"png",u);
+        }catch(IOException e){
+            System.out.println("Error: " + e);
+        }
+    }
     // creates a random string
     public static String randString(int length) {
         String randChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-_";
