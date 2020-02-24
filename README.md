@@ -1,4 +1,4 @@
-Run Project:
+How to run Project:
 
 For Linux and macOS:
 1. Make sure Java is installed.
