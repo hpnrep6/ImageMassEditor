@@ -1,3 +1,5 @@
+A simple image editor written in Java used to edit large amounts of images at once. Can be used for stitching together and cropping all image files in a directory.
+
 How to run Project:
 
 For Linux and macOS:
